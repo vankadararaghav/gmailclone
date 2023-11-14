@@ -29,6 +29,7 @@ function Compose() {
     const [isMinimized, setIsMinimized] = useState(false);
     const dispatch=useDispatch();
     const user=useSelector(selectUser);
+    const [isExpanded,SetIsExpanded] = useState(false);
 
     function formSubmit(e){
         e.preventDefault();
@@ -111,24 +112,30 @@ function Compose() {
     }
 
     const toggleMinimize = () => {
-        setIsMinimized(true);
+
+        setIsMinimized(!isMinimized);
+        SetIsExpanded(!isExpanded);
     };
 
     const toggleMaximize = () => {
-        setIsMinimized(false);
+            
+            setIsMinimized(false);
+            SetIsExpanded(!isExpanded);
+        
+       
     };
 
 
   return (
-    <div className={`compose${isMinimized ? ' minimized' : ''}`}>
+    <div className={`compose${isMinimized ? ' minimized' : ''}${isExpanded ? 'expanded' : ''}`}>
         <div className='compose__header'>
             <div className='compose__header__left'>
                 <span>New Message</span>
             </div>
             <div className='compose__header__right'>
-                <RemoveIcon  onClick={toggleMinimize} />
-                <HeightIcon onClick={toggleMaximize} />
-                <CloseIcon onClick={()=>dispatch(closeSendMessage())} />
+                <RemoveIcon style={{marginRight:"7px"}}fontSize='10px' onClick={toggleMinimize} />
+                <HeightIcon style={{marginRight:"7px"}} fontSize="10px" onClick={toggleMaximize} />
+                <CloseIcon   fontSize="10px" onClick={()=>dispatch(closeSendMessage())} />
             </div>
         </div>
         {!isMinimized && (
@@ -137,17 +144,16 @@ function Compose() {
                 <div className='compose__bodyForm'>
                     <input type='email' placeholder='Recipents' value={to} onChange={(e)=>setTo(e.target.value)} />
                     <input type='text' placeholder='Subject' value={subject} onChange={(e)=>setSubject(e.target.value)} />
-                    <textarea rows="20" onChange={(e)=>setMessage(e.target.value)}>{message}</textarea>
+                    <textarea rows={isExpanded?"28":"20"} onChange={(e)=>setMessage(e.target.value)}>{message}</textarea>
                 </div>
             </div>
     
             <div className='compose__footer'>
                 <div className='compose__footerLeft'>
                     <button type='submit'>
-                        Send 
+                        Send <ArrowDropDownIcon/>
                     </button>
-                </div>
-                <div className='compose__footerRight'>
+                    <div className='compose__footerRight'>
                     <FormatColorTextIcon/>
                     <AttachFileIcon/>
                     <LinkIcon/>
@@ -157,6 +163,9 @@ function Compose() {
                     <PhonelinkLockIcon/>
                     <CreateIcon/>
                     <MoreVertIcon/>
+                    </div>
+                </div>
+                <div className='compose__footerRight'>
                     <DeleteIcon/>
                 </div>
             </div>
