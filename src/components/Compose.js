@@ -21,6 +21,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { selectUser, signin } from '../features/counter/useSlice';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+
 
 function Compose() {
     const [to,setTo]=useState('');
@@ -114,7 +116,13 @@ function Compose() {
     const toggleMinimize = () => {
 
         setIsMinimized(!isMinimized);
-        SetIsExpanded(!isExpanded);
+
+        if(isMinimized!==true){
+          SetIsExpanded(false);
+        }
+        // else{
+        //   SetIsExpanded(!isExpanded);
+        // }
     };
 
     const toggleMaximize = () => {
@@ -134,7 +142,7 @@ function Compose() {
             </div>
             <div className='compose__header__right'>
                 <RemoveIcon style={{marginRight:"7px"}}fontSize='10px' onClick={toggleMinimize} />
-                <HeightIcon style={{marginRight:"7px"}} fontSize="10px" onClick={toggleMaximize} />
+            { isExpanded ?   <CloseFullscreenIcon  style={{marginRight:"7px",transform: "rotate(45deg)",transformOrigin: "center",}} fontSize="10px" onClick={toggleMaximize}/>:<HeightIcon style={{marginRight:"7px"}} fontSize="10px" onClick={toggleMaximize} />}
                 <CloseIcon   fontSize="10px" onClick={()=>dispatch(closeSendMessage())} />
             </div>
         </div>
